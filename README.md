@@ -107,13 +107,13 @@ It preserves enough information to replay any event once the underlying issue is
 
 ## Decisions made
 
-** 1.HMAC verification uses `timingSafeEqual`** — a regular string comparison (`===`) is vulnerable to timing attacks that can leak information about the secret. `timingSafeEqual` takes constant time regardless of where the strings diverge.
+**HMAC verification uses `timingSafeEqual`** — a regular string comparison (`===`) is vulnerable to timing attacks that can leak information about the secret. `timingSafeEqual` takes constant time regardless of where the strings diverge.
 
-** 2. Raw body is stored alongside the parsed payload** — the parsed JSONB is useful for querying; the raw body is the source of truth for signature verification and replaying events from the DLQ.
+**Raw body is stored alongside the parsed payload** — the parsed JSONB is useful for querying; the raw body is the source of truth for signature verification and replaying events from the DLQ.
 
-** 3. Dead letter queue** — the requirement said "nothing gets lost if something goes wrong." A DLQ table is the simplest durable fallback that doesn't require additional infrastructure. The trade-off is that retries are manual or need a separate job.
+**Dead letter queue** — the requirement said "nothing gets lost if something goes wrong." A DLQ table is the simplest durable fallback that doesn't require additional infrastructure. The trade-off is that retries are manual or need a separate job.
 
-** 4. `event_type` extracted to a top-level column** — makes it practical to filter or aggregate events by type without querying into the JSONB. Falls back to `"unknown"` if the payload doesn't include a `type` field.
+**`event_type` extracted to a top-level column** — makes it practical to filter or aggregate events by type without querying into the JSONB. Falls back to `"unknown"` if the payload doesn't include a `type` field.
 
 ---
 
