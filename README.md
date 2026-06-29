@@ -1,6 +1,6 @@
 # Webhook Receiver
 
-A Next.js 14 service that receives, verifies, and stores webhook events from third-party providers.
+A Next.js 14 service demo that receives, verifies, and stores webhook events from third-party providers.
 
 ---
 
